@@ -65,6 +65,13 @@ const setControls = (camera, renderer) => {
     renderer.domElement
   )
   controls.enableZoom = true
+
+  // Autorotate but stop after the first interaction
+  controls.autoRotate = true;    
+  controls.addEventListener('start', function(){
+    controls.autoRotate = false;
+  });    
+
   camera.controls = controls
   return controls
 }
@@ -87,6 +94,10 @@ const render = (element, renderer, scene, camera) => {
   element.appendChild(renderer.domElement)
   const animate = () => {
     window.requestAnimationFrame(animate)
+
+    // Update controls otherwise will not auto rotate
+    camera.controls.update();
+
     renderer.render(scene, camera)
   }
   animate()
