@@ -80,10 +80,9 @@ const setControls = (camera, renderer) => {
  * Configure Three renderer.
  */
 const setRenderer = (width, height) => {
-  const renderer = new THREE.WebGLRenderer({ antialias: true })
+  const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true })
   renderer.setSize(width, height)
   renderer.setPixelRatio(window.devicePixelRatio)
-  renderer.setClearColor(new THREE.Color('hsl(0, 0%, 10%)'))
   return renderer
 }
 
@@ -160,20 +159,18 @@ const loadObj = (objLoader, scene, url, callback) => {
   const material = new THREE.MeshPhongMaterial({ color: 0xbbbbcc })
 
   objLoader.load(url, (obj) => {
-    obj.geometry.computeVertexNormals()
-    obj.geometry.mergeVertices()
+
     if (!objLoader.materials) {
       obj.traverse((child) => {
-        child.geometry.computeVertexNormals()
-        child.geometry.mergeVertices()
         if (child instanceof THREE.Mesh) {
           child.material = material
         }
       })
     }
-    mesh.geometry.computeVertexNormals()
+
     scene.add(obj)
     fitCameraToObject(scene.camera, obj, scene.lights)
+    
     scene.locked = false
     if (callback) callback(obj)
     emitEvent(scene.element, 'loaded', {obj})
