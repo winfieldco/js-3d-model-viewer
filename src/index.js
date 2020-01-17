@@ -31,7 +31,16 @@ const setLights = (scene) => {
   // Add simple ambient light for even light around entire object
   const ambient = new THREE.AmbientLight(0xffffff, 1)
 
+  const backLight = new THREE.DirectionalLight(0xEEEEEE, 0.05)
+  backLight.position.set(100, 0, -100).normalize()
+
+  const fillLight = new THREE.DirectionalLight(0xEEEEEE, 0.05)
+  fillLight.position.set(100, 0, 100)
+
+  scene.add(backLight)
+  scene.add(fillLight)
   scene.add(ambient)  
+  
   scene.lights = {ambient}
 
   return scene
